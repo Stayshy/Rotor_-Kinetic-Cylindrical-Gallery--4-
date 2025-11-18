@@ -1,0 +1,6 @@
+services:
+  rotor-frontend:
+    build: .
+    container_name: rotor-kinetic-gallery
+    ports:
+      - "3000:80"
