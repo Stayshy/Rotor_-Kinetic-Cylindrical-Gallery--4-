@@ -120,7 +120,6 @@ export default function App() {
           animationSpeeds={animationSpeeds}
           onAnimationSpeedChange={updateAnimationSpeed}
           isLoading={displayState.isLoading || marqueeState.isLoading}
-          cameraInfo={cameraInfo}
         />
       </section>
 

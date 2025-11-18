@@ -1,18 +1,18 @@
 import React, { useRef } from 'react';
-import { useFrame } from '@react-three/fiber';
+import { extend, useFrame } from '@react-three/fiber'; // Add extend import
 import * as THREE from 'three';
 
 // Custom material with gradient backface (matches MeshBannerMaterial from tutorial)
 class MarqueeStripMaterial extends THREE.MeshBasicMaterial {
   constructor(parameters = {}) {
-    super(parameters);
+    const { backfaceRepeatX = 1.0, ...rest } = parameters; // Extract custom prop to avoid super warning
+    super(rest);
     
-    // Store custom property internally, don't try to set it on THREE.Material
-    this._backfaceRepeatX = parameters.backfaceRepeatX !== undefined ? parameters.backfaceRepeatX : 1.0;
+    this.backfaceRepeatX = backfaceRepeatX; // Store directly (matches prop name for R3F)
   }
 
   onBeforeCompile = (shader) => {
-    shader.uniforms.repeatX = { value: this._backfaceRepeatX * 0.1 };
+    shader.uniforms.repeatX = { value: this.backfaceRepeatX * 0.1 };
     shader.fragmentShader = shader.fragmentShader
       .replace(
         '#include <common>',
@@ -34,6 +34,9 @@ class MarqueeStripMaterial extends THREE.MeshBasicMaterial {
   };
 }
 
+// Extend for R3F JSX usage (must be outside component)
+extend({ MarqueeStripMaterial });
+
 export function MarqueeStrip({ 
   position, 
   texture, 
@@ -52,12 +55,8 @@ export function MarqueeStrip({
   }
   
   useFrame((state, delta) => {
-    // Animation exactly like the tutorial
-    if (!ref.current) return;
-    const material = ref.current.material;
-    if (material.map) {
-      material.map.offset.x += delta * animationSpeed;
-    }
+    if (!ref.current?.material?.map) return; // Safer check
+    ref.current.material.map.offset.x += delta * animationSpeed;
   });
   
   return (
@@ -65,12 +64,13 @@ export function MarqueeStrip({
       <cylinderGeometry
         args={[radius, radius, radius * 0.07, radius * 80, radius * 10, true]}
       />
-      <primitive object={new MarqueeStripMaterial({
-        map: texture,
-        side: THREE.DoubleSide,
-        toneMapped: false,
-        backfaceRepeatX: backfaceRepeatX
-      })} />
+      <marqueeStripMaterial // Use extended tag
+        attach="material" // Crucial for attachment
+        map={texture}
+        side={THREE.DoubleSide}
+        toneMapped={false}
+        backfaceRepeatX={backfaceRepeatX}
+      />
     </mesh>
   );
 }
