@@ -1,5 +1,409 @@
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap');
 @import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap');
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  --font-size: 16px;
+  --background: #F4F2F0;
+  --foreground: #1B1B1B;
+  --card: #FFFFFF;
+  --card-foreground: #1B1B1B;
+  --popover: #FFFFFF;
+  --popover-foreground: #1B1B1B;
+  --primary: #C8A951;
+  --primary-foreground: #1B1B1B;
+  --secondary: #EADCC2;
+  --secondary-foreground: #1B1B1B;
+  --muted: #E8E4DF;
+  --muted-foreground: #6B6256;
+  --accent: #8C6C44;
+  --accent-foreground: #FFFFFF;
+  --destructive: #7B2D26;
+  --destructive-foreground: #FFFFFF;
+  --border: rgba(200, 169, 81, 0.2);
+  --input: transparent;
+  --input-background: #FAF8F5;
+  --switch-background: #C4C1A4;
+  --font-weight-medium: 500;
+  --font-weight-normal: 400;
+  --ring: #C8A951;
+  --chart-1: #C8A951;
+  --chart-2: #8C6C44;
+  --chart-3: #7B2D26;
+  --chart-4: #D6A1A1;
+  --chart-5: #C4C1A4;
+  --radius: 1.25rem;
+  --sidebar: #FAF8F5;
+  --sidebar-foreground: #1B1B1B;
+  --sidebar-primary: #C8A951;
+  --sidebar-primary-foreground: #1B1B1B;
+  --sidebar-accent: #EADCC2;
+  --sidebar-accent-foreground: #1B1B1B;
+  --sidebar-border: rgba(200, 169, 81, 0.2);
+  --sidebar-ring: #C8A951;
+  
+  /* Custom colors */
+  --gold: #C8A951;
+  --bronze: #8C6C44;
+  --burgundy: #7B2D26;
+  --mahogany: #4B2C20;
+  --rose: #D6A1A1;
+  --coffee: #5C4033;
+  --sage: #C4C1A4;
+  --sand: #EADCC2;
+  --ivory: #FAF8F5;
+  --parchment: #F4F2F0;
+}
+
+.dark {
+  --background: #1B1B1B;
+  --foreground: #F4F2F0;
+  --card: #2A2622;
+  --card-foreground: #F4F2F0;
+  --popover: #2A2622;
+  --popover-foreground: #F4F2F0;
+  --primary: #C8A951;
+  --primary-foreground: #1B1B1B;
+  --secondary: #3D342A;
+  --secondary-foreground: #F4F2F0;
+  --muted: #3D342A;
+  --muted-foreground: #A89F95;
+  --accent: #8C6C44;
+  --accent-foreground: #F4F2F0;
+  --destructive: #A84238;
+  --destructive-foreground: #FFFFFF;
+  --border: rgba(200, 169, 81, 0.3);
+  --input: #3D342A;
+  --ring: #C8A951;
+  --font-weight-medium: 500;
+  --font-weight-normal: 400;
+  --chart-1: #C8A951;
+  --chart-2: #8C6C44;
+  --chart-3: #7B2D26;
+  --chart-4: #D6A1A1;
+  --chart-5: #C4C1A4;
+  --sidebar: #2A2622;
+  --sidebar-foreground: #F4F2F0;
+  --sidebar-primary: #C8A951;
+  --sidebar-primary-foreground: #1B1B1B;
+  --sidebar-accent: #3D342A;
+  --sidebar-accent-foreground: #F4F2F0;
+  --sidebar-border: rgba(200, 169, 81, 0.3);
+  --sidebar-ring: #C8A951;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-input-background: var(--input-background);
+  --color-switch-background: var(--switch-background);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    letter-spacing: 0.01em;
+  }
+}
+
+/**
+ * Base typography. This is not applied to elements which have an ancestor with a Tailwind text class.
+ */
+@layer base {
+  :where(:not(:has([class*=' text-']), :not(:has([class^='text-'])))) {
+    h1 {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: var(--text-2xl);
+      font-weight: 600;
+      line-height: 1.4;
+      letter-spacing: 0.02em;
+    }
+
+    h2 {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: var(--text-xl);
+      font-weight: 600;
+      line-height: 1.4;
+      letter-spacing: 0.02em;
+    }
+
+    h3 {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: var(--text-lg);
+      font-weight: 600;
+      line-height: 1.4;
+      letter-spacing: 0.02em;
+    }
+
+    h4 {
+      font-size: var(--text-base);
+      font-weight: var(--font-weight-medium);
+      line-height: 1.5;
+    }
+
+    p {
+      font-size: var(--text-base);
+      font-weight: var(--font-weight-normal);
+      line-height: 1.6;
+    }
+
+    label {
+      font-size: var(--text-base);
+      font-weight: var(--font-weight-medium);
+      line-height: 1.5;
+    }
+
+    button {
+      font-size: var(--text-base);
+      font-weight: var(--font-weight-medium);
+      line-height: 1.5;
+    }
+
+    input {
+      font-size: var(--text-base);
+      font-weight: var(--font-weight-normal);
+      line-height: 1.5;
+    }
+  }
+}
+
+html {
+  font-size: var(--font-size);
+}
+
+/* Luxurious paper texture */
+.paper-texture {
+  background-image: 
+    linear-gradient(90deg, rgba(0,0,0,0.015) 1px, transparent 1px),
+    linear-gradient(rgba(0,0,0,0.015) 1px, transparent 1px),
+    radial-gradient(circle at 20% 50%, rgba(200, 169, 81, 0.03) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(140, 108, 68, 0.02) 0%, transparent 50%);
+  background-size: 50px 50px, 50px 50px, 100% 100%, 100% 100%;
+}
+
+/* Old paper texture for book pages */
+.old-paper {
+  background-image: 
+    linear-gradient(90deg, rgba(0,0,0,0.02) 1px, transparent 1px),
+    linear-gradient(rgba(0,0,0,0.02) 1px, transparent 1px),
+    radial-gradient(ellipse at top left, rgba(200, 169, 81, 0.08) 0%, transparent 50%),
+    radial-gradient(ellipse at bottom right, rgba(123, 45, 38, 0.05) 0%, transparent 50%);
+  background-size: 60px 60px, 60px 60px, 100% 100%, 100% 100%;
+  background-color: #FAF8F5;
+}
+
+/* Vignette effect */
+.vignette {
+  position: relative;
+}
+
+.vignette::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center, transparent 40%, rgba(27, 27, 27, 0.15) 100%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Gold border frame */
+.gold-frame {
+  border: 3px solid #C8A951;
+  box-shadow: 
+    inset 0 0 0 1px rgba(200, 169, 81, 0.3),
+    inset 0 0 20px rgba(200, 169, 81, 0.1),
+    0 4px 20px rgba(200, 169, 81, 0.2);
+}
+
+/* Antique photo frame */
+.photo-frame {
+  border: 8px solid transparent;
+  background: 
+    linear-gradient(#FFFFFF, #FFFFFF) padding-box,
+    linear-gradient(135deg, #C8A951 0%, #8C6C44 50%, #C8A951 100%) border-box;
+  box-shadow: 
+    0 10px 30px rgba(0, 0, 0, 0.15),
+    inset 0 0 0 2px rgba(200, 169, 81, 0.1);
+}
+
+/* Floating animation */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-25px) rotate(1deg);
+  }
+}
+
+.float-animation {
+  animation: float 8s ease-in-out infinite;
+}
+
+/* Gold shimmer effect */
+@keyframes shimmer {
+  0% {
+    background-position: -200% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
+}
+
+.gold-shimmer {
+  background: linear-gradient(
+    90deg,
+    rgba(200, 169, 81, 0) 0%,
+    rgba(200, 169, 81, 0.3) 50%,
+    rgba(200, 169, 81, 0) 100%
+  );
+  background-size: 200% auto;
+  animation: shimmer 3s linear infinite;
+}
+
+/* Elegant gold glow */
+.gold-glow {
+  box-shadow: 
+    0 0 20px rgba(200, 169, 81, 0.3),
+    0 0 40px rgba(200, 169, 81, 0.2),
+    0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+/* Gold text gradient */
+.gold-text {
+  background: linear-gradient(135deg, #C8A951 0%, #D4BA6E 50%, #C8A951 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Burgundy gradient */
+.burgundy-gradient {
+  background: linear-gradient(135deg, #7B2D26 0%, #A84238 50%, #7B2D26 100%);
+}
+
+/* Warm gradient background */
+.warm-gradient {
+  background: linear-gradient(135deg, #FAF8F5 0%, #EADCC2 50%, #F4F2F0 100%);
+}
+
+/* Luxurious gradient overlay */
+.luxury-gradient {
+  background: linear-gradient(
+    135deg,
+    rgba(200, 169, 81, 0.05) 0%,
+    rgba(123, 45, 38, 0.03) 50%,
+    rgba(140, 108, 68, 0.05) 100%
+  );
+}
+
+/* Decorative ornament */
+.ornament {
+  position: relative;
+}
+
+.ornament::before,
+.ornament::after {
+  content: '';
+  position: absolute;
+  width: 60px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #C8A951, transparent);
+}
+
+.ornament::before {
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.ornament::after {
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* Page turn effect */
+@keyframes page-turn {
+  0% {
+    transform: perspective(2000px) rotateY(0deg);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+  }
+  50% {
+    transform: perspective(2000px) rotateY(-10deg);
+    box-shadow: -20px 20px 50px rgba(0, 0, 0, 0.3);
+  }
+  100% {
+    transform: perspective(2000px) rotateY(0deg);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+  }
+}
+
+/* Embossed text effect */
+.embossed {
+  text-shadow: 
+    1px 1px 0px rgba(255, 255, 255, 0.5),
+    -1px -1px 0px rgba(0, 0, 0, 0.1);
+}
+
+/* Noble button */
+.noble-button {
+  background: linear-gradient(135deg, #C8A951 0%, #B89943 100%);
+  border: 1px solid rgba(200, 169, 81, 0.5);
+  box-shadow: 
+    0 4px 15px rgba(200, 169, 81, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+}
+
+.noble-button:hover {
+  background: linear-gradient(135deg, #D4BA6E 0%, #C8A951 100%);
+  box-shadow: 
+    0 6px 25px rgba(200, 169, 81, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+}
 
 @theme {
   /* Font sizes */
