@@ -1,13 +1,12 @@
-import { useState } from 'react';
-import React from "react";
+import React, { useState } from "react";
 
-import { KineticScene } from './components/webgl/KineticScene';
-import { ImageUploadOverlay } from './components/ui/ImageUploadOverlay';
-import { ControlPanel } from './components/ui/ControlPanel';
-import { useTextureManager } from './hooks/useTextureManager';
-import { ArrowRight, Heart, Camera, Menu } from 'lucide-react';
+import { KineticScene } from "./components/webgl/KineticScene";
+import { ImageUploadOverlay } from "./components/ui/ImageUploadOverlay";
+import { ControlPanel } from "./components/ui/ControlPanel";
+import { useTextureManager } from "./hooks/useTextureManager";
 
-import { HeroSection } from "./components/hero-section";
+import { ArrowRight, Heart, Camera } from "lucide-react";
+
 import { PersonCard } from "./components/person-card";
 import { FamilyTreeView } from "./components/family-tree-view";
 import { BookPreview } from "./components/book-preview";
@@ -93,418 +92,9 @@ const mockPeople = [
   },
 ];
 
-// -------------------- Вариант 1: Elegant Family (альбом) --------------------
+// -------------------- 3D-герой (ротор + кинолента) --------------------
 
-function ElegantFamilyView() {
-  const [activeTab, setActiveTab] = useState<"home" | "list" | "tree" | "book">(
-    "home"
-  );
-
-  return (
-    <div className="min-h-screen bg-background">
-      {/* Header */}
-      <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-lg border-b-2 border-[#C8A951]/20 shadow-md">
-        <div className="max-w-7xl mx-auto px-6 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#C8A951] to-[#8C6C44] flex items-center justify-center shadow-lg ring-2 ring-[#C8A951]/30">
-                <BookOpen className="w-7 h-7 text-white" />
-              </div>
-              <div>
-                <h2 className="gold-text tracking-wide">Альбом воспоминаний</h2>
-                <p className="text-xs text-[#8C6C44] tracking-widest uppercase">
-                  Семейная летопись
-                </p>
-              </div>
-            </div>
-
-            <nav className="hidden md:flex items-center gap-2">
-              <Button
-                variant={activeTab === "home" ? "default" : "ghost"}
-                className={`rounded-xl transition-all ${
-                  activeTab === "home"
-                    ? "noble-button text-[#1B1B1B] shadow-md"
-                    : "hover:bg-[#C8A951]/10 text-[#4B2C20]"
-                }`}
-                onClick={() => setActiveTab("home")}
-              >
-                <Home className="mr-2 h-4 w-4" />
-                Главная
-              </Button>
-              <Button
-                variant={activeTab === "list" ? "default" : "ghost"}
-                className={`rounded-xl transition-all ${
-                  activeTab === "list"
-                    ? "noble-button text-[#1B1B1B] shadow-md"
-                    : "hover:bg-[#C8A951]/10 text-[#4B2C20]"
-                }`}
-                onClick={() => setActiveTab("list")}
-              >
-                <Users className="mr-2 h-4 w-4" />
-                Список
-              </Button>
-              <Button
-                variant={activeTab === "tree" ? "default" : "ghost"}
-                className={`rounded-xl transition-all ${
-                  activeTab === "tree"
-                    ? "noble-button text-[#1B1B1B] shadow-md"
-                    : "hover:bg-[#C8A951]/10 text-[#4B2C20]"
-                }`}
-                onClick={() => setActiveTab("tree")}
-              >
-                <GitBranch className="mr-2 h-4 w-4" />
-                Дерево
-              </Button>
-              <Button
-                variant={activeTab === "book" ? "default" : "ghost"}
-                className={`rounded-xl transition-all ${
-                  activeTab === "book"
-                    ? "noble-button text-[#1B1B1B] shadow-md"
-                    : "hover:bg-[#C8A951]/10 text-[#4B2C20]"
-                }`}
-                onClick={() => setActiveTab("book")}
-              >
-                <BookOpen className="mr-2 h-4 w-4" />
-                Книга
-              </Button>
-            </nav>
-
-            <div className="flex items-center gap-3">
-              <AddPersonDialog />
-              <Button
-                variant="ghost"
-                size="icon"
-                className="rounded-xl hover:bg-[#C8A951]/10 transition-all"
-              >
-                <Settings className="h-5 w-5 text-[#8C6C44]" />
-              </Button>
-            </div>
-          </div>
-        </div>
-      </header>
-
-      {/* Main Content */}
-      <main>
-        {activeTab === "home" && (
-          <div>
-            <HeroSection />
-
-            {/* Quick Stats */}
-            <section className="py-20 px-6 relative">
-              <div className="absolute inset-0 warm-gradient opacity-50"></div>
-              <div className="max-w-7xl mx-auto relative z-10">
-                <div className="grid md:grid-cols-3 gap-8">
-                  <div className="bg-white rounded-3xl p-8 shadow-xl border-2 border-[#C8A951]/20 paper-texture group hover:shadow-2xl transition-all hover:scale-105 duration-300">
-                    <div className="flex items-center gap-5">
-                      <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#C8A951]/20 to-[#C8A951]/10 flex items-center justify-center group-hover:from-[#C8A951]/30 group-hover:to-[#C8A951]/20 transition-all">
-                        <Users className="w-8 h-8 text-[#C8A951]" />
-                      </div>
-                      <div>
-                        <div className="text-4xl gold-text">
-                          {mockPeople.length}
-                        </div>
-                        <div className="text-sm text-[#6B6256] tracking-wide">
-                          Членов семьи
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="bg-white rounded-3xl p-8 shadow-xl border-2 border-[#8C6C44]/20 paper-texture group hover:shadow-2xl transition-all hover:scale-105 duration-300">
-                    <div className="flex items-center gap-5">
-                      <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#8C6C44]/20 to-[#8C6C44]/10 flex items-center justify-center group-hover:from-[#8C6C44]/30 group-hover:to-[#8C6C44]/20 transition-all">
-                        <GitBranch className="w-8 h-8 text-[#8C6C44]" />
-                      </div>
-                      <div>
-                        <div className="text-4xl text-[#8C6C44]">4</div>
-                        <div className="text-sm text-[#6B6256] tracking-wide">
-                          Поколения
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="bg-white rounded-3xl p-8 shadow-xl border-2 border-[#7B2D26]/20 paper-texture group hover:shadow-2xl transition-all hover:scale-105 duration-300">
-                    <div className="flex items-center gap-5">
-                      <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#7B2D26]/20 to-[#7B2D26]/10 flex items-center justify-center group-hover:from-[#7B2D26]/30 group-hover:to-[#7B2D26]/20 transition-all">
-                        <BookOpen className="w-8 h-8 text-[#7B2D26]" />
-                      </div>
-                      <div>
-                        <div className="text-4xl text-[#7B2D26]">12</div>
-                        <div className="text-sm text-[#6B6256] tracking-wide">
-                          Историй
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </section>
-
-            {/* Recent additions */}
-            <section className="py-20 px-6 bg-gradient-to-br from-[#FAF8F5] to-[#EADCC2]/40">
-              <div className="max-w-7xl mx-auto">
-                <div className="flex items-center justify-between mb-12">
-                  <div>
-                    <div className="flex items-center gap-3 mb-3">
-                      <Sparkles className="w-6 h-6 text-[#C8A951]" />
-                      <h2 className="text-[#7B2D26] tracking-wide">
-                        Недавно добавленные
-                      </h2>
-                    </div>
-                    <div className="h-px w-48 bg-gradient-to-r from-[#C8A951] to-transparent"></div>
-                  </div>
-                  <Button
-                    variant="outline"
-                    className="rounded-xl border-2 border-[#C8A951]/40 hover:bg-[#C8A951]/10 shadow-md hover:shadow-lg transition-all text-[#4B2C20]"
-                    onClick={() => setActiveTab("list")}
-                  >
-                    Смотреть всех
-                  </Button>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                  {mockPeople.slice(0, 3).map((person) => (
-                    <PersonCard
-                      key={person.id}
-                      name={person.name}
-                      relation={person.relation}
-                      years={person.years}
-                      image={person.image}
-                      story={person.story}
-                      onEdit={() => console.log("Edit", person.id)}
-                      onViewStory={() => console.log("View story", person.id)}
-                    />
-                  ))}
-                </div>
-              </div>
-            </section>
-          </div>
-        )}
-
-        {activeTab === "list" && (
-          <section className="py-16 px-6 min-h-screen bg-gradient-to-br from-[#FAF8F5] to-[#F4F2F0]">
-            <div className="max-w-7xl mx-auto">
-              <div className="flex items-center justify-between mb-12">
-                <div>
-                  <div className="flex items-center gap-3 mb-3">
-                    <Users className="w-8 h-8 text-[#C8A951]" />
-                    <h1 className="text-[#7B2D26]">Члены семьи</h1>
-                  </div>
-                  <div className="h-px w-64 bg-gradient-to-r from-[#C8A951] to-transparent mb-2"></div>
-                  <p className="text-[#6B6256] tracking-wide">
-                    Все люди в вашем семейном древе
-                  </p>
-                </div>
-                <AddPersonDialog>
-                  <Button className="noble-button rounded-2xl shadow-lg text-[#1B1B1B]">
-                    <Plus className="mr-2 h-5 w-5" />
-                    Добавить человека
-                  </Button>
-                </AddPersonDialog>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-                {mockPeople.map((person) => (
-                  <PersonCard
-                    key={person.id}
-                    name={person.name}
-                    relation={person.relation}
-                    years={person.years}
-                    image={person.image}
-                    story={person.story}
-                    onEdit={() => console.log("Edit", person.id)}
-                    onViewStory={() => console.log("View story", person.id)}
-                  />
-                ))}
-              </div>
-            </div>
-          </section>
-        )}
-
-        {activeTab === "tree" && (
-          <section className="py-16 px-6 min-h-screen bg-gradient-to-br from-[#FAF8F5] to-[#F4F2F0]">
-            <div className="max-w-7xl mx-auto">
-              <div className="mb-12">
-                <div className="flex items-center gap-3 mb-3">
-                  <GitBranch className="w-8 h-8 text-[#C8A951]" />
-                  <h1 className="text-[#7B2D26]">Генеалогическое древо</h1>
-                </div>
-                <div className="h-px w-80 bg-gradient-to-r from-[#C8A951] to-transparent mb-2"></div>
-                <p className="text-[#6B6256] tracking-wide">
-                  Визуализация связей в вашей семье
-                </p>
-              </div>
-
-              <FamilyTreeView />
-            </div>
-          </section>
-        )}
-
-        {activeTab === "book" && (
-          <section className="py-16 px-6 min-h-screen bg-gradient-to-br from-[#FAF8F5] to-[#F4F2F0]">
-            <div className="max-w-7xl mx-auto">
-              <div className="mb-12">
-                <div className="flex items-center gap-3 mb-3">
-                  <BookOpen className="w-8 h-8 text-[#C8A951]" />
-                  <h1 className="text-[#7B2D26]">Книга воспоминаний</h1>
-                </div>
-                <div className="h-px w-96 bg-gradient-to-r from-[#C8A951] to-transparent mb-2"></div>
-                <p className="text-[#6B6256] tracking-wide">
-                  Цифровая семейная летопись с историями и фотографиями
-                </p>
-              </div>
-
-              <div className="bg-gradient-to-br from-[#EADCC2]/30 to-[#FAF8F5] rounded-3xl p-12 shadow-xl border-2 border-[#C8A951]/20">
-                <BookPreview />
-              </div>
-            </div>
-          </section>
-        )}
-
-        {/* Общие секции */}
-        <FeaturesSection />
-        <PricingSection />
-        <TestimonialsSection />
-        <CTASection />
-      </main>
-
-      {/* Footer */}
-      <footer className="relative bg-gradient-to-br from-[#4B2C20] to-[#5C4033] text-[#EADCC2] py-16 px-6 mt-24 overflow-hidden">
-        <div className="absolute inset-0 opacity-5">
-          <svg className="w-full h-full" viewBox="0 0 800 400">
-            <circle
-              cx="100"
-              cy="100"
-              r="80"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1"
-            />
-            <circle
-              cx="700"
-              cy="300"
-              r="100"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1"
-            />
-            <path
-              d="M0,200 Q200,180 400,200 T800,200"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1"
-            />
-          </svg>
-        </div>
-
-        <div className="max-w-7xl mx-auto relative z-10">
-          <div className="grid md:grid-cols-4 gap-12 mb-12">
-            <div className="md:col-span-2">
-              <div className="flex items-center gap-4 mb-6">
-                <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#C8A951] to-[#8C6C44] flex items-center justify-center shadow-lg">
-                  <BookOpen className="w-7 h-7 text-white" />
-                </div>
-                <h3 className="gold-text text-2xl tracking-wide">
-                  Альбом воспоминаний
-                </h3>
-              </div>
-              <div className="h-px w-48 bg-gradient-to-r from-[#C8A951] to-transparent mb-4"></div>
-              <p className="text-[#C4C1A4] max-w-md leading-relaxed">
-                Сохраните историю вашей семьи для будущих поколений.
-                Создайте цифровой архив фотографий, историй и генеалогических
-                связей.
-              </p>
-            </div>
-
-            <div>
-              <h4 className="text-[#C8A951] mb-6 tracking-wider">Навигация</h4>
-              <ul className="space-y-3">
-                <li>
-                  <button
-                    onClick={() => setActiveTab("home")}
-                    className="text-[#C4C1A4] hover:text-[#C8A951] transition-colors tracking-wide"
-                  >
-                    Главная
-                  </button>
-                </li>
-                <li>
-                  <button
-                    onClick={() => setActiveTab("list")}
-                    className="text-[#C4C1A4] hover:text-[#C8A951] transition-colors tracking-wide"
-                  >
-                    Список членов семьи
-                  </button>
-                </li>
-                <li>
-                  <button
-                    onClick={() => setActiveTab("tree")}
-                    className="text-[#C4C1A4] hover:text-[#C8A951] transition-colors tracking-wide"
-                  >
-                    Генеалогическое древо
-                  </button>
-                </li>
-                <li>
-                  <button
-                    onClick={() => setActiveTab("book")}
-                    className="text-[#C4C1A4] hover:text-[#C8A951] transition-colors tracking-wide"
-                  >
-                    Книга воспоминаний
-                  </button>
-                </li>
-              </ul>
-            </div>
-
-            <div>
-              <h4 className="text-[#C8A951] mb-6 tracking-wider">Помощь</h4>
-              <ul className="space-y-3">
-                <li>
-                  <a
-                    href="#"
-                    className="text-[#C4C1A4] hover:text-[#C8A951] transition-colors tracking-wide"
-                  >
-                    Как начать
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    className="text-[#C4C1A4] hover:text-[#C8A951] transition-colors tracking-wide"
-                  >
-                    Руководство
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    className="text-[#C4C1A4] hover:text-[#C8A951] transition-colors tracking-wide"
-                  >
-                    Поддержка
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </div>
-
-          <div className="border-t-2 border-[#C8A951]/20 pt-8">
-            <div className="flex items-center justify-center gap-3">
-              <div className="w-16 h-px bg-gradient-to-r from-transparent via-[#C8A951] to-transparent"></div>
-              <Sparkles className="w-4 h-4 text-[#C8A951]" />
-              <div className="w-16 h-px bg-gradient-to-r from-transparent via-[#C8A951] to-transparent"></div>
-            </div>
-            <p className="text-center text-sm text-[#C4C1A4] mt-4 tracking-widest">
-              © 2025 Альбом воспоминаний. Храните историю семьи с любовью.
-            </p>
-          </div>
-        </div>
-      </footer>
-    </div>
-  );
-}
-
-// -------------------- Вариант 2: 3D-галерея (ротор) --------------------
-
-function RotorGalleryView() {
+function RotorHeroSection() {
   const {
     displayState,
     marqueeState,
@@ -529,52 +119,7 @@ function RotorGalleryView() {
   ];
 
   return (
-    <div className="min-h-screen w-full bg-background">
-      {/* Header */}
-      <header className="fixed top-0 left-0 right-0 z-40 bg-background/80 backdrop-blur-md border-b border-border">
-        <div className="container mx-auto px-8 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <Camera className="w-6 h-6 text-primary" />
-            <span className="font-semibold text-lg text-foreground">
-              Альбом Воспоминаний
-            </span>
-          </div>
-
-          <nav className="hidden md:flex items-center gap-8">
-            <a
-              href="#"
-              className="text-foreground hover:text-primary transition-colors"
-            >
-              Галерея
-            </a>
-            <a
-              href="#"
-              className="text-foreground hover:text-primary transition-colors"
-            >
-              О нас
-            </a>
-            <a
-              href="#"
-              className="text-foreground hover:text-primary transition-colors"
-            >
-              Контакты
-            </a>
-          </nav>
-
-          <div className="flex items-center gap-4">
-            <Button variant="outline" size="sm">
-              Войти
-            </Button>
-            <Button size="sm" className="hidden md:inline-flex">
-              Начать
-            </Button>
-            <Button variant="ghost" size="sm" className="md:hidden">
-              <Menu className="w-5 h-5" />
-            </Button>
-          </div>
-        </div>
-      </header>
-
+    <>
       {/* Hero + 3D Cylinder */}
       <section className="relative h-screen flex items-center justify-center pt-16">
         <div className="absolute inset-0">
@@ -607,7 +152,10 @@ function RotorGalleryView() {
             </p>
 
             <div className="flex flex-wrap gap-4">
-              <Button size="lg" className="gap-2 shadow-lg hover:shadow-xl transition-shadow">
+              <Button
+                size="lg"
+                className="gap-2 shadow-lg hover:shadow-xl transition-shadow"
+              >
                 <Camera className="w-5 h-5" />
                 Начать создание
                 <ArrowRight className="w-5 h-5" />
@@ -728,28 +276,426 @@ function RotorGalleryView() {
           </div>
         </div>
       </section>
+    </>
+  );
+}
 
-      <footer className="py-12 bg-muted/30 border-t border-border">
-        <div className="container mx-auto px-8 text-center">
-          <p className="text-muted-foreground">
-            © 2025 Альбом Воспоминаний. Сохраняем моменты, которые важны.
-          </p>
+// -------------------- Основной экран Elegant с табами --------------------
+
+function ElegantFamilyView() {
+  const [activeTab, setActiveTab] = useState<"home" | "list" | "tree" | "book">(
+    "home"
+  );
+
+  return (
+    <div className="min-h-screen bg-background">
+      {/* Header (остаемся от Elegant) */}
+      <header className="sticky top-0 z-40 bg-background/95 backdrop-blur-lg border-b-2 border-[#C8A951]/20 shadow-md">
+        <div className="max-w-7xl mx-auto px-6 py-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#C8A951] to-[#8C6C44] flex items-center justify-center shadow-lg ring-2 ring-[#C8A951]/30">
+                <BookOpen className="w-7 h-7 text-white" />
+              </div>
+              <div>
+                <h2 className="gold-text tracking-wide">Альбом воспоминаний</h2>
+                <p className="text-xs text-[#8C6C44] tracking-widest uppercase">
+                  Семейная летопись
+                </p>
+              </div>
+            </div>
+
+            <nav className="hidden md:flex items-center gap-2">
+              <Button
+                variant={activeTab === "home" ? "default" : "ghost"}
+                className={`rounded-xl transition-all ${
+                  activeTab === "home"
+                    ? "noble-button text-[#1B1B1B] shadow-md"
+                    : "hover:bg-[#C8A951]/10 text-[#4B2C20]"
+                }`}
+                onClick={() => setActiveTab("home")}
+              >
+                <Home className="mr-2 h-4 w-4" />
+                Главная
+              </Button>
+              <Button
+                variant={activeTab === "list" ? "default" : "ghost"}
+                className={`rounded-xl transition-all ${
+                  activeTab === "list"
+                    ? "noble-button text-[#1B1B1B] shadow-md"
+                    : "hover:bg-[#C8A951]/10 text-[#4B2C20]"
+                }`}
+                onClick={() => setActiveTab("list")}
+              >
+                <Users className="mr-2 h-4 w-4" />
+                Список
+              </Button>
+              <Button
+                variant={activeTab === "tree" ? "default" : "ghost"}
+                className={`rounded-xl transition-all ${
+                  activeTab === "tree"
+                    ? "noble-button text-[#1B1B1B] shadow-md"
+                    : "hover:bg-[#C8A951]/10 text-[#4B2C20]"
+                }`}
+                onClick={() => setActiveTab("tree")}
+              >
+                <GitBranch className="mr-2 h-4 w-4" />
+                Дерево
+              </Button>
+              <Button
+                variant={activeTab === "book" ? "default" : "ghost"}
+                className={`rounded-xl transition-all ${
+                  activeTab === "book"
+                    ? "noble-button text-[#1B1B1B] shadow-md"
+                    : "hover:bg-[#C8A951]/10 text-[#4B2C20]"
+                }`}
+                onClick={() => setActiveTab("book")}
+              >
+                <BookOpen className="mr-2 h-4 w-4" />
+                Книга
+              </Button>
+            </nav>
+
+            <div className="flex items-center gap-3">
+              <AddPersonDialog />
+              <Button
+                variant="ghost"
+                size="icon"
+                className="rounded-xl hover:bg-[#C8A951]/10 transition-all"
+              >
+                <Settings className="h-5 w-5 text-[#8C6C44]" />
+              </Button>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      {/* Main Content */}
+      <main>
+        {activeTab === "home" && (
+          <div>
+            {/* 3D-цилиндр + кинолента */}
+            <RotorHeroSection />
+
+            {/* Quick Stats */}
+            <section className="py-20 px-6">
+              <div className="max-w-7xl mx-auto relative rounded-3xl overflow-hidden">
+                <div className="absolute inset-0 warm-gradient opacity-50" />
+                <div className="relative z-10 p-8 md:p-10">
+                  <div className="grid md:grid-cols-3 gap-8">
+                    <div className="bg-white rounded-3xl p-8 shadow-xl border-2 border-[#C8A951]/20 paper-texture group hover:shadow-2xl transition-all hover:scale-105 duration-300">
+                      <div className="flex items-center gap-5">
+                        <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#C8A951]/20 to-[#C8A951]/10 flex items-center justify-center group-hover:from-[#C8A951]/30 group-hover:to-[#C8A951]/20 transition-all">
+                          <Users className="w-8 h-8 text-[#C8A951]" />
+                        </div>
+                        <div>
+                          <div className="text-4xl gold-text">
+                            {mockPeople.length}
+                          </div>
+                          <div className="text-sm text-[#6B6256] tracking-wide">
+                            Членов семьи
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="bg-white rounded-3xl p-8 shadow-xl border-2 border-[#8C6C44]/20 paper-texture group hover:shadow-2xl transition-all hover:scale-105 duration-300">
+                      <div className="flex items-center gap-5">
+                        <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#8C6C44]/20 to-[#8C6C44]/10 flex items-center justify-center group-hover:from-[#8C6C44]/30 group-hover:to-[#8C6C44]/20 transition-all">
+                          <GitBranch className="w-8 h-8 text-[#8C6C44]" />
+                        </div>
+                        <div>
+                          <div className="text-4xl text-[#8C6C44]">4</div>
+                          <div className="text-sm text-[#6B6256] tracking-wide">
+                            Поколения
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="bg-white rounded-3xl p-8 shadow-xl border-2 border-[#7B2D26]/20 paper-texture group hover:shadow-2xl transition-all hover:scale-105 duration-300">
+                      <div className="flex items-center gap-5">
+                        <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#7B2D26]/20 to-[#7B2D26]/10 flex items-center justify-center group-hover:from-[#7B2D26]/30 group-hover:to-[#7B2D26]/20 transition-all">
+                          <BookOpen className="w-8 h-8 text-[#7B2D26]" />
+                        </div>
+                        <div>
+                          <div className="text-4xl text-[#7B2D26]">12</div>
+                          <div className="text-sm text-[#6B6256] tracking-wide">
+                            Историй
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+
+            {/* Недавно добавленные */}
+            <section className="py-20 px-6 bg-gradient-to-br from-[#FAF8F5] to-[#EADCC2]/40">
+              <div className="max-w-7xl mx-auto">
+                <div className="flex items-center justify-between mb-12">
+                  <div>
+                    <div className="flex items-center gap-3 mb-3">
+                      <Sparkles className="w-6 h-6 text-[#C8A951]" />
+                      <h2 className="text-[#7B2D26] tracking-wide">
+                        Недавно добавленные
+                      </h2>
+                    </div>
+                    <div className="h-px w-48 bg-gradient-to-r from-[#C8A951] to-transparent" />
+                  </div>
+                  <Button
+                    variant="outline"
+                    className="rounded-xl border-2 border-[#C8A951]/40 hover:bg-[#C8A951]/10 shadow-md hover:shadow-lg transition-all text-[#4B2C20]"
+                    onClick={() => setActiveTab("list")}
+                  >
+                    Смотреть всех
+                  </Button>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                  {mockPeople.slice(0, 3).map((person) => (
+                    <PersonCard
+                      key={person.id}
+                      name={person.name}
+                      relation={person.relation}
+                      years={person.years}
+                      image={person.image}
+                      story={person.story}
+                      onEdit={() => console.log("Edit", person.id)}
+                      onViewStory={() => console.log("View story", person.id)}
+                    />
+                  ))}
+                </div>
+              </div>
+            </section>
+          </div>
+        )}
+
+        {activeTab === "list" && (
+          <section className="py-16 px-6 min-h-screen bg-gradient-to-br from-[#FAF8F5] to-[#F4F2F0]">
+            <div className="max-w-7xl mx-auto">
+              <div className="flex items-center justify-between mb-12">
+                <div>
+                  <div className="flex items-center gap-3 mb-3">
+                    <Users className="w-8 h-8 text-[#C8A951]" />
+                    <h1 className="text-[#7B2D26]">Члены семьи</h1>
+                  </div>
+                  <div className="h-px w-64 bg-gradient-to-r from-[#C8A951] to-transparent mb-2" />
+                  <p className="text-[#6B6256] tracking-wide">
+                    Все люди в вашем семейном древе
+                  </p>
+                </div>
+                <AddPersonDialog>
+                  <Button className="noble-button rounded-2xl shadow-lg text-[#1B1B1B]">
+                    <Plus className="mr-2 h-5 w-5" />
+                    Добавить человека
+                  </Button>
+                </AddPersonDialog>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+                {mockPeople.map((person) => (
+                  <PersonCard
+                    key={person.id}
+                    name={person.name}
+                    relation={person.relation}
+                    years={person.years}
+                    image={person.image}
+                    story={person.story}
+                    onEdit={() => console.log("Edit", person.id)}
+                    onViewStory={() => console.log("View story", person.id)}
+                  />
+                ))}
+              </div>
+            </div>
+          </section>
+        )}
+
+        {activeTab === "tree" && (
+          <section className="py-16 px-6 min-h-screen bg-gradient-to-br from-[#FAF8F5] to-[#F4F2F0]">
+            <div className="max-w-7xl mx-auto">
+              <div className="mb-12">
+                <div className="flex items-center gap-3 mb-3">
+                  <GitBranch className="w-8 h-8 text-[#C8A951]" />
+                  <h1 className="text-[#7B2D26]">Генеалогическое древо</h1>
+                </div>
+                <div className="h-px w-80 bg-gradient-to-r from-[#C8A951] to-transparent mb-2" />
+                <p className="text-[#6B6256] tracking-wide">
+                  Визуализация связей в вашей семье
+                </p>
+              </div>
+
+              <FamilyTreeView />
+            </div>
+          </section>
+        )}
+
+        {activeTab === "book" && (
+          <section className="py-16 px-6 min-h-screen bg-gradient-to-br from-[#FAF8F5] to-[#F4F2F0]">
+            <div className="max-w-7xl mx-auto">
+              <div className="mb-12">
+                <div className="flex items-center gap-3 mb-3">
+                  <BookOpen className="w-8 h-8 text-[#C8A951]" />
+                  <h1 className="text-[#7B2D26]">Книга воспоминаний</h1>
+                </div>
+                <div className="h-px w-96 bg-gradient-to-r from-[#C8A951] to-transparent mb-2" />
+                <p className="text-[#6B6256] tracking-wide">
+                  Цифровая семейная летопись с историями и фотографиями
+                </p>
+              </div>
+
+              <div className="bg-gradient-to-br from-[#EADCC2]/30 to-[#FAF8F5] rounded-3xl p-12 shadow-xl border-2 border-[#C8A951]/20">
+                <BookPreview />
+              </div>
+            </div>
+          </section>
+        )}
+
+        {/* Общие секции под табами */}
+        <FeaturesSection />
+        <PricingSection />
+        <TestimonialsSection />
+        <CTASection />
+      </main>
+
+      {/* Footer от Elegant */}
+      <footer className="relative bg-gradient-to-br from-[#4B2C20] to-[#5C4033] text-[#EADCC2] py-16 px-6 mt-24 overflow-hidden">
+        <div className="absolute inset-0 opacity-5">
+          <svg className="w-full h-full" viewBox="0 0 800 400">
+            <circle
+              cx="100"
+              cy="100"
+              r="80"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1"
+            />
+            <circle
+              cx="700"
+              cy="300"
+              r="100"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1"
+            />
+            <path
+              d="M0,200 Q200,180 400,200 T800,200"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1"
+            />
+          </svg>
+        </div>
+
+        <div className="max-w-7xl mx-auto relative z-10">
+          <div className="grid md:grid-cols-4 gap-12 mb-12">
+            <div className="md:col-span-2">
+              <div className="flex items-center gap-4 mb-6">
+                <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#C8A951] to-[#8C6C44] flex items-center justify-center shadow-lg">
+                  <BookOpen className="w-7 h-7 text-white" />
+                </div>
+                <h3 className="gold-text text-2xl tracking-wide">
+                  Альбом воспоминаний
+                </h3>
+              </div>
+              <div className="h-px w-48 bg-gradient-to-r from-[#C8A951] to-transparent mb-4" />
+              <p className="text-[#C4C1A4] max-w-md leading-relaxed">
+                Сохраните историю вашей семьи для будущих поколений.
+                Создайте цифровой архив фотографий, историй и генеалогических
+                связей.
+              </p>
+            </div>
+
+            <div>
+              <h4 className="text-[#C8A951] mb-6 tracking-wider">Навигация</h4>
+              <ul className="space-y-3">
+                <li>
+                  <button
+                    onClick={() => setActiveTab("home")}
+                    className="text-[#C4C1A4] hover:text-[#C8A951] transition-colors tracking-wide"
+                  >
+                    Главная
+                  </button>
+                </li>
+                <li>
+                  <button
+                    onClick={() => setActiveTab("list")}
+                    className="text-[#C4C1A4] hover:text-[#C8A951] transition-colors tracking-wide"
+                  >
+                    Список членов семьи
+                  </button>
+                </li>
+                <li>
+                  <button
+                    onClick={() => setActiveTab("tree")}
+                    className="text-[#C4C1A4] hover:text-[#C8A951] transition-colors tracking-wide"
+                  >
+                    Генеалогическое древо
+                  </button>
+                </li>
+                <li>
+                  <button
+                    onClick={() => setActiveTab("book")}
+                    className="text-[#C4C1A4] hover:text-[#C8A951] transition-colors tracking-wide"
+                  >
+                    Книга воспоминаний
+                  </button>
+                </li>
+              </ul>
+            </div>
+
+            <div>
+              <h4 className="text-[#C8A951] mb-6 tracking-wider">Помощь</h4>
+              <ul className="space-y-3">
+                <li>
+                  <a
+                    href="#"
+                    className="text-[#C4C1A4] hover:text-[#C8A951] transition-colors tracking-wide"
+                  >
+                    Как начать
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="#"
+                    className="text-[#C4C1A4] hover:text-[#C8A951] transition-colors tracking-wide"
+                  >
+                    Руководство
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="#"
+                    className="text-[#C4C1A4] hover:text-[#C8A951] transition-colors tracking-wide"
+                  >
+                    Поддержка
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div className="border-t-2 border-[#C8A951]/20 pt-8">
+            <div className="flex items-center justify-center gap-3">
+              <div className="w-16 h-px bg-gradient-to-r from-transparent via-[#C8A951] to-transparent" />
+              <Sparkles className="w-4 h-4 text-[#C8A951]" />
+              <div className="w-16 h-px bg-gradient-to-r from-transparent via-[#C8A951] to-transparent" />
+            </div>
+            <p className="text-center text-sm text-[#C4C1A4] mt-4 tracking-widest">
+              © 2025 Альбом воспоминаний. Храните историю семьи с любовью.
+            </p>
+          </div>
         </div>
       </footer>
     </div>
   );
 }
 
-// -------------------- Корневое приложение с переключателем --------------------
+// -------------------- Корневое приложение --------------------
 
 export default function App() {
-  return (
-    <>
-      {/* СЕКЦИЯ 1 — 3D цилиндр с кинолентой */}
-      <RotorGalleryView />
-
-      {/* СЕКЦИЯ 2 — Elegant Family альбом под ним */}
-      <ElegantFamilyView />
-    </>
-  );
+  
+  return <ElegantFamilyView />;
 }
