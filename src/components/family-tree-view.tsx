@@ -1,7 +1,9 @@
+import React from "react";
 import { useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Button } from "./ui/button";
 import { ZoomIn, ZoomOut, Maximize2 } from "lucide-react";
+
 
 interface TreeNode {
   id: string;

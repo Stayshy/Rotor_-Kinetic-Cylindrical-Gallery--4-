@@ -1,5 +1,6 @@
-import { GitBranch, Image, BookOpen, Cloud, Shield, Smartphone } from "lucide-react";
+import * as React from "react";
 
+import { GitBranch, Image, BookOpen, Cloud, Shield, Smartphone } from "lucide-react";
 const features = [
   {
     icon: GitBranch,

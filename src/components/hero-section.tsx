@@ -1,6 +1,8 @@
+
+import * as React from "react";
+
 import { Plus, BookOpen, ArrowRight, Heart } from "lucide-react";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
-
 export function HeroSection() {
   return (
     <section className="relative overflow-hidden min-h-screen flex items-center bg-gradient-to-b from-[#E8DCC4] via-[#F4F2F0] to-[#FAF8F5]">

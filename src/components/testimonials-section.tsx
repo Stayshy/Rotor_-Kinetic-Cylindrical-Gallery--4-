@@ -1,5 +1,6 @@
 import { Star, Quote } from "lucide-react";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
+import React from "react";
 
 const testimonials = [
   {

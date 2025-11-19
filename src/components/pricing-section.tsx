@@ -1,5 +1,7 @@
+import * as React from "react";
 import { Check, Sparkles, Crown, Star } from "lucide-react";
 import { Badge } from "./ui/badge";
+
 
 const plans = [
   {
@@ -225,16 +227,11 @@ export function PricingSection() {
                 </svg>
               </div>
               
-              {/* Card as tree canopy */}
-              <div className={`relative h-full bg-white rounded-[3rem] overflow-hidden shadow-2xl border-4 border-white hover:shadow-[0_30px_80px_rgba(0,0,0,0.2)] transition-all duration-500 mb-16`}>
-                {/* Tree canopy shape at top */}
-                <div className="absolute -top-20 left-1/2 -translate-x-1/2 w-48 h-48 rounded-full opacity-10"
-                     style={{ background: `radial-gradient(circle, ${plan.accentColor}, transparent)` }}></div>
-                
-                {/* Header with gradient */}
-                <div className={`relative p-10 bg-gradient-to-br ${plan.color} overflow-hidden`}>
-                  {/* Leaves decoration */}
-                  <div className="absolute -right-8 -top-8 opacity-20">
+              {/* Header with gradient */}
+              <div className={`relative p-10 bg-gradient-to-br ${plan.color} overflow-hidden`}>
+                {/* Leaves decoration */}
+                <div className="absolute -right-8 -top-8 opacity-20">
+                  <svg width="160" height="120" viewBox="0 0 160 120">
                     {[...Array(5)].map((_, i) => (
                       <ellipse
                         key={i}
@@ -248,7 +245,12 @@ export function PricingSection() {
                         style={{ animationDelay: `${i * 0.2}s` }}
                       />
                     ))}
-                  </div>
+                  </svg>
+                </div>
+
+                <div className="relative z-10">
+                  {/* Icon и остальной контент... */}
+
                   
                   <div className="relative z-10">
                     {/* Icon */}

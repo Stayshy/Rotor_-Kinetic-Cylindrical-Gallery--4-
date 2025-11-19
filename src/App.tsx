@@ -743,29 +743,13 @@ function RotorGalleryView() {
 // -------------------- Корневое приложение с переключателем --------------------
 
 export default function App() {
-  const [view, setView] = useState<"gallery" | "album">("gallery");
-
   return (
     <>
-      {/* Переключатель режимов в правом верхнем углу */}
-      <div className="fixed top-4 right-4 z-[100] flex gap-2">
-        <Button
-          size="sm"
-          variant={view === "gallery" ? "default" : "outline"}
-          onClick={() => setView("gallery")}
-        >
-          3D-галерея
-        </Button>
-        <Button
-          size="sm"
-          variant={view === "album" ? "default" : "outline"}
-          onClick={() => setView("album")}
-        >
-          Альбом
-        </Button>
-      </div>
+      {/* СЕКЦИЯ 1 — 3D цилиндр с кинолентой */}
+      <RotorGalleryView />
 
-      {view === "gallery" ? <RotorGalleryView /> : <ElegantFamilyView />}
+      {/* СЕКЦИЯ 2 — Elegant Family альбом под ним */}
+      <ElegantFamilyView />
     </>
   );
 }

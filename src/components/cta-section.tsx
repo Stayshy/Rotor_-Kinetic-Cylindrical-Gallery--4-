@@ -1,4 +1,6 @@
+import React from "react";
 import { ArrowRight, Heart } from "lucide-react";
+
 
 export function CTASection() {
   return (
